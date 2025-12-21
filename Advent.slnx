@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Kernel/">
+    <Project Path="src\kernel\application\Advent.Kernel.Application.csproj" />
+    <Project Path="src\kernel\base\Advent.Kernel.csproj" />
+    <Project Path="src\kernel\domain\Advent.Kernel.Domain.csproj" />
+    <Project Path="src\kernel\infrastructure\Advent.Kernel.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Presentations/" />
+  <Folder Name="/Presentations/Api/" />
+  <Folder Name="/Presentations/Api/Announcements/">
+    <Project Path="src/presentation/api/announcements/Advent.Announcements.Api.csproj" />
+  </Folder>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/Announcements/">
+    <Project Path="src/services/announcements/application/Advent.Announcements.Application.csproj" />
+    <Project Path="src/services/announcements/domain/Advent.Announcements.Domain.csproj" />
+    <Project Path="src/services/announcements/infrastructure/Advent.Announcements.Infrastructure.csproj" />
+    <Project Path="tests/announcements/Advent.Announcements.Tests.csproj" />
+  </Folder>
+</Solution>
