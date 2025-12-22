@@ -6,7 +6,38 @@ internal class NoticeConfiguration : IEntityTypeConfiguration<Notice>
 {
     public void Configure(EntityTypeBuilder<Notice> builder)
     {
-        // TODO: implementar configurations
-        throw new NotImplementedException();
+        builder.HasKey(notice => notice.Id);
+
+        builder
+            .Property(notice => notice.Title)
+            .IsRequired()
+            .HasMaxLength(150);
+
+        builder
+            .Property(notice => notice.Description)
+            .IsRequired()
+            .HasMaxLength(1000);
+
+        builder
+            .Property(notice => notice.StartDate)
+            .IsRequired();
+
+        builder
+            .Property(notice => notice.EndDate);
+
+        builder
+            .Property(notice => notice.IsActive)
+            .IsRequired();
+
+        builder
+            .Property(notice => notice.CreatedAt)
+            .IsRequired();
+
+        builder
+            .Property(notice => notice.CreatedByUserId)
+            .IsRequired();
+
+        builder.HasIndex(notice => notice.IsActive);
+        builder.HasIndex(notice => notice.StartDate);
     }
 }
