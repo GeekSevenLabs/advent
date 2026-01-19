@@ -23,10 +23,11 @@ internal class NoticeConfiguration : IEntityTypeConfiguration<Notice>
             .IsRequired();
 
         builder
-            .Property(notice => notice.EndDate);
+            .Property(notice => notice.EndDate)
+            .IsRequired(false);
 
         builder
-            .Property(notice => notice.IsActive)
+            .Property(notice => notice.IsDeleted)
             .IsRequired();
 
         builder
@@ -37,7 +38,7 @@ internal class NoticeConfiguration : IEntityTypeConfiguration<Notice>
             .Property(notice => notice.CreatedByUserId)
             .IsRequired();
 
-        builder.HasIndex(notice => notice.IsActive);
+        builder.HasIndex(notice => notice.IsDeleted);
         builder.HasIndex(notice => notice.StartDate);
     }
 }

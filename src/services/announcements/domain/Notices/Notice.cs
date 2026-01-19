@@ -7,8 +7,8 @@ public class Notice : Entity, IAgreggateRoot
     public Notice(
         string title,
         string description,
-        DateTime startDate,
-        DateTime? endDate,
+        DateOnly startDate,
+        DateOnly? endDate,
         Guid createdByUserId)
     {
         Validate(title, description, startDate, endDate, createdByUserId);
@@ -18,21 +18,17 @@ public class Notice : Entity, IAgreggateRoot
         StartDate = startDate;
         EndDate = endDate;
         CreatedByUserId = createdByUserId;
-        IsActive = true;
-        CreatedAt = DateTime.UtcNow;
     }
 
     public string Title { get; private set; } = null!;
     public string Description { get; private set; } = null!;
-    public DateTime StartDate { get; private set; }
-    public DateTime? EndDate { get; private set; }
-    public bool IsActive { get; private set; }
-    public DateTime CreatedAt { get; private set; }
+    public DateOnly StartDate { get; private set; }
+    public DateOnly? EndDate { get; private set; }
     public Guid CreatedByUserId { get; private set; }
 
     public void Deactivate()
     {
-        IsActive = false;
+        base.Delete();
     }
 
     public void Activate()
@@ -41,19 +37,20 @@ public class Notice : Entity, IAgreggateRoot
             throw new InvalidOperationException(
                 "Não é possível ativar um aviso expirado.");
 
-        IsActive = true;
+        base.Recover();
     }
 
     public bool IsExpired()
     {
-        return EndDate.HasValue && EndDate.Value < DateTime.UtcNow;
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        return EndDate.HasValue && EndDate.Value < today;
     }
 
     private static void Validate(
         string title,
         string description,
-        DateTime startDate,
-        DateTime? endDate,
+        DateOnly startDate,
+        DateOnly? endDate,
         Guid createdByUserId)
     {
         if (string.IsNullOrWhiteSpace(title))

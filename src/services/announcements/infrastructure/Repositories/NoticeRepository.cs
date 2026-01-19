@@ -1,5 +1,6 @@
 using Advent.Announcements.Domain.Notices;
 using Advent.Announcements.Infrastructure.Contexts;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Advent.Announcements.Infrastructure.Repositories;
 
@@ -11,26 +12,26 @@ internal class NoticeRepository(AnnouncementDbContext db)
         db.Notices.Add(notice);
     }
 
-    public IEnumerable<Notice> GetActive()
+    public IEnumerable<Notice> GetActives()
     {
-        var now = DateTime.UtcNow;
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
         return db.Notices
             .Where(n =>
-            n.IsActive &&
-            n.StartDate <= now &&
-            (n.EndDate == null || n.EndDate >= now))
+            !n.IsDeleted &&
+            n.StartDate <= today &&
+            (n.EndDate == null || n.EndDate >= today))
             .AsNoTracking()
             .ToList();
     }
 
-    public IEnumerable<Notice> GetActiveByDate(DateTime date)
+    public IEnumerable<Notice> GetActivesByPeriod(DateOnly start, DateOnly end)
     {
         return db.Notices
             .Where(n =>
-            n.IsActive &&
-            n.StartDate <= date &&
-            (n.EndDate == null || n.EndDate >= date))
+            !n.IsDeleted &&
+            n.StartDate <= end &&
+            (n.EndDate == null || n.EndDate >= start))
             .AsNoTracking()
             .ToList();
     }
