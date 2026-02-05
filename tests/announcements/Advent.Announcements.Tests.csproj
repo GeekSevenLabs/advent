@@ -23,4 +23,9 @@
     <ProjectReference Include="..\..\src\services\announcements\infrastructure\Advent.Announcements.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\" />
+    <Folder Include="Infrastructure\" />
+  </ItemGroup>
+
 </Project>

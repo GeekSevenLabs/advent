@@ -1,6 +1,6 @@
 ﻿using Advent.Announcements.Domain.Notices;
 
-namespace Advent.Announcements.Tests;
+namespace Advent.Announcements.Tests.Domain.Notices;
 
 public class NoticeTests
 {
