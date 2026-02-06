@@ -1,6 +1,5 @@
 using Advent.Announcements.Domain.Notices;
 using Advent.Announcements.Infrastructure.Contexts;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Advent.Announcements.Infrastructure.Repositories;
 
