@@ -3,7 +3,7 @@ using Advent.Announcements.Domain.Notices;
 
 namespace Advent.Announcements.Tests.Application.Notices;
 
-public class GetActiveNoticeHandlerTest
+public class GetActivesNoticeHandlerTest
 {
     [Fact]
     public async Task GivenExistingActiveNoticesWhenHandleCalledThenReturnsList()
@@ -21,8 +21,8 @@ public class GetActiveNoticeHandlerTest
             .Setup(repo => repo.GetActives())
             .Returns(fakeNotices);
 
-        var handler = new GetActiveNoticesHandler(repository);
-        var request = new GetActiveNoticeRequest();
+        var handler = new GetActivesNoticeHandler(repository);
+        var request = new GetActivesNoticeRequest();
 
         // Act
         var response = await handler.HandlerAsync(request, CancellationToken.None);

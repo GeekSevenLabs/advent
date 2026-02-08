@@ -2,10 +2,10 @@
 
 namespace Advent.Announcements.Application.Notices.GetActives;
 
-public class GetActiveNoticesHandler(INoticeRepository repository) : IGetActiveNoticeHandler
+public class GetActivesNoticeHandler(INoticeRepository repository) : IGetActivesNoticeHandler
 {
-    public Task<IEnumerable<GetActiveNoticeResponse>> HandlerAsync(
-        GetActiveNoticeRequest request, CancellationToken cancellationToken)
+    public Task<IEnumerable<GetActivesNoticeResponse>> HandlerAsync(
+        GetActivesNoticeRequest request, CancellationToken cancellationToken)
     {
         var notice = repository.GetActives();
         var response = notice.Select(n => n.ToResponse());

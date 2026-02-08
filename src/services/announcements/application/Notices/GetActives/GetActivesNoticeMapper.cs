@@ -2,13 +2,13 @@
 
 namespace Advent.Announcements.Application.Notices.GetActives;
 
-internal static class GetActiveNoticeMapper
+internal static class GetActivesNoticeMapper
 {
     extension(Notice notice)
     {
-        public GetActiveNoticeResponse ToResponse()
+        public GetActivesNoticeResponse ToResponse()
         {
-            return new GetActiveNoticeResponse(
+            return new GetActivesNoticeResponse(
                 notice.Id,
                 notice.Title,
                 notice.Description,

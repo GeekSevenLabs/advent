@@ -1,3 +1,3 @@
 ﻿namespace Advent.Announcements.Application.Notices.GetActives;
 
-public record GetActiveNoticeRequest;
+public record GetActivesNoticeRequest;
