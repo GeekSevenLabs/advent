@@ -2,5 +2,5 @@
 
 public interface IGetActivesNoticeHandler
 {
-    Task<IEnumerable<GetActivesNoticeResponse>> HandlerAsync(GetActivesNoticeRequest request, CancellationToken cancellationToken);
+    Task<IEnumerable<GetActivesNoticeResponse>> HandleAsync(GetActivesNoticeRequest request, CancellationToken cancellationToken);
 }

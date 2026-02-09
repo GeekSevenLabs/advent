@@ -25,7 +25,7 @@ public class GetActivesNoticeHandlerTest
         var request = new GetActivesNoticeRequest();
 
         // Act
-        var response = await handler.HandlerAsync(request, CancellationToken.None);
+        var response = await handler.HandleAsync(request, CancellationToken.None);
 
         // Assert
         Assert.NotNull(response);
