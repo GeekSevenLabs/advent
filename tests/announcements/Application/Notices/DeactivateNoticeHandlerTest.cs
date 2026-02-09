@@ -1,10 +1,10 @@
-﻿using Advent.Announcements.Application.Notices.GetDeactivate;
+﻿using Advent.Announcements.Application.Notices.Deactivate;
 using Advent.Announcements.Domain;
 using Advent.Announcements.Domain.Notices;
 
 namespace Advent.Announcements.Tests.Application.Notices;
 
-public class GetDeactivateNoticeHandlerTest
+public class DeactivateNoticeHandlerTest
 {
     [Fact]
     public async Task GivenExistingNoticeWhenHandleCalledThenNoticeIsDeactivated()
@@ -26,8 +26,8 @@ public class GetDeactivateNoticeHandlerTest
             .Setup(repo => repo.GetById(It.IsAny<Guid>()))
             .Returns(notice);
 
-        var handler = new GetDeactivateNoticeHandler(repository, unitOfWork);
-        var request = new GetDeactivateNoticeRequest(noticeId);
+        var handler = new DeactivateNoticeHandler(repository, unitOfWork);
+        var request = new DeactivateNoticeRequest(noticeId);
 
         // Act
         var response = await handler.HandleAsync(request, CancellationToken.None);
@@ -56,8 +56,8 @@ public class GetDeactivateNoticeHandlerTest
             .Setup(repo => repo.GetById(It.IsAny<Guid>()))
             .Returns((Notice?)null);
 
-        var handler = new GetDeactivateNoticeHandler(repository, unitOfWork);
-        var request = new GetDeactivateNoticeRequest(Guid.NewGuid());
+        var handler = new DeactivateNoticeHandler(repository, unitOfWork);
+        var request = new DeactivateNoticeRequest(Guid.NewGuid());
 
         // Act & Assert
         await Assert.ThrowsAsync<InvalidOperationException>(() =>

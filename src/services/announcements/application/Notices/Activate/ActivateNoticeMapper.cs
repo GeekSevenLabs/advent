@@ -2,7 +2,7 @@
 
 namespace Advent.Announcements.Application.Notices.Activate;
 
-public static class ActivateNoticeMapper
+internal static class ActivateNoticeMapper
 {
     extension (Notice notice)
     {
