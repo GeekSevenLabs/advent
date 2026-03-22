@@ -4,4 +4,3 @@ public interface IActivateNoticeHandler
 {
     Task<ActivateNoticeResponse> HandleAsync(ActivateNoticeRequest request, CancellationToken cancellationToken);
 }
-    

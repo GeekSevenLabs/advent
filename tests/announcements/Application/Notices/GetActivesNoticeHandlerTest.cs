@@ -18,22 +18,22 @@ public class GetActivesNoticeHandlerTest
         };
 
         Mock.Get(repository)
-            .Setup(repo => repo.GetActives())
-            .Returns(fakeNotices);
+            .Setup(repo => repo.GetActivesAsync(TestContext.Current.CancellationToken))
+            .ReturnsAsync(fakeNotices);
 
         var handler = new GetActivesNoticeHandler(repository);
         var request = new GetActivesNoticeRequest();
 
         // Act
-        var response = await handler.HandleAsync(request, CancellationToken.None);
-
+        var response = (await handler.HandleAsync(request, TestContext.Current.CancellationToken)).ToArray();
+        
         // Assert
         Assert.NotNull(response);
-        Assert.Equal(2, response.Count());
+        Assert.Equal(2, response.Length);
         Assert.Contains(response, r => r.Title == "Aviso 1");
         Assert.Contains(response, r => r.Title == "Aviso 2");
 
         Mock.Get(repository)
-            .Verify(repo => repo.GetActives(), Times.Once);
+            .Verify(repo => repo.GetActivesAsync(TestContext.Current.CancellationToken), Times.Once);
     }
 }

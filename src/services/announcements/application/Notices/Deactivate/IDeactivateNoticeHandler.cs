@@ -1,6 +1,4 @@
-﻿using Advent.Announcements.Application.Notices.Deactivate;
-
-namespace Advent.Announcements.Application.Notices.GetDeactivate;
+﻿namespace Advent.Announcements.Application.Notices.Deactivate;
 
 public interface IDeactivateNoticeHandler
 {

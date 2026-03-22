@@ -1,6 +1,7 @@
 ﻿using Advent.Announcements.Application.Notices.Activate;
 using Advent.Announcements.Domain;
 using Advent.Announcements.Domain.Notices;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Engine.ClientProtocol;
 
 namespace Advent.Announcements.Tests.Application.Notices;
 
@@ -21,14 +22,14 @@ public class ActivateNoticeHandlerTest
         );
 
         Mock.Get(repository)
-            .Setup(repo => repo.GetById(It.IsAny<Guid>()))
-            .Returns(notice);
+            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
+            .ReturnsAsync(notice);
 
         var handler = new ActivateNoticeHandler(repository, unitOfWork);
         var request = new ActivateNoticeRequest(notice.Id);
 
         // Act
-        var response = await handler.HandleAsync(request, CancellationToken.None);
+        var response = await handler.HandleAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(response);
@@ -55,15 +56,15 @@ public class ActivateNoticeHandlerTest
         );
 
         Mock.Get(repository)
-            .Setup(repo => repo.GetById(It.IsAny<Guid>()))
-            .Returns(notice);
+            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
+            .ReturnsAsync(notice);
 
         var handler = new ActivateNoticeHandler(repository, unitOfWork);
         var request = new ActivateNoticeRequest(notice.Id);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            handler.HandleAsync(request, CancellationToken.None));
+            handler.HandleAsync(request, TestContext.Current.CancellationToken));
 
         Assert.Equal("Não é possível ativar um aviso expirado.", exception.Message);
     }
@@ -76,15 +77,14 @@ public class ActivateNoticeHandlerTest
         var unitOfWork = Mock.Of<IAnnouncementUnitOfWork>();
 
         Mock.Get(repository)
-            .Setup(repo => repo.GetById(It.IsAny<Guid>()))
-            .Returns((Notice?)null);
+            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
+            .ReturnsAsync((Notice?)null);
 
         var handler = new ActivateNoticeHandler(repository, unitOfWork);
         var request = new ActivateNoticeRequest(Guid.NewGuid());
 
         // Act & Assert
-        await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            handler.HandleAsync(request, CancellationToken.None));
+        await Assert.ThrowsAsync<ArgumentException>(() =>
+            handler.HandleAsync(request, TestContext.Current.CancellationToken));
     }
 }
-
