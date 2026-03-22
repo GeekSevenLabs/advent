@@ -1,5 +1,4 @@
-﻿using Advent.Announcements.Application.Notices.GetDeactivate;
-using Advent.Announcements.Domain;
+﻿using Advent.Announcements.Domain;
 using Advent.Announcements.Domain.Notices;
 
 namespace Advent.Announcements.Application.Notices.Deactivate;
@@ -8,9 +7,8 @@ public class DeactivateNoticeHandler(INoticeRepository repository, IAnnouncement
 {
     public async Task<DeactivateNoticeResponse> HandleAsync(DeactivateNoticeRequest request, CancellationToken cancellationToken)
     {
-        var notice = repository.GetById(request.Id);
-        if (notice is null)
-            throw new InvalidOperationException("Notice not found");
+        var notice = await repository.GetByIdAsync(request.Id, cancellationToken);
+        Throw.When.Null(notice, Resource.NoticeNotFound);
 
         notice.Deactivate();
 

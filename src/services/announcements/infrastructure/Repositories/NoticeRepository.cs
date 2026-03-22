@@ -6,37 +6,37 @@ namespace Advent.Announcements.Infrastructure.Repositories;
 internal class NoticeRepository(AnnouncementDbContext db)
     : INoticeRepository
 {
-    public void Add(Notice notice)
+    public void Add(Notice notice, CancellationToken _)
     {
         db.Notices.Add(notice);
     }
 
-    public IEnumerable<Notice> GetActives()
+    public async Task<IEnumerable<Notice>> GetActivesAsync(CancellationToken  cancellationToken)
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
-        return db.Notices
+        return await db.Notices
             .Where(n =>
             !n.IsDeleted &&
             n.StartDate <= today &&
             (n.EndDate == null || n.EndDate >= today))
             .AsNoTracking()
-            .ToList();
+            .ToListAsync(cancellationToken);
     }
 
-    public IEnumerable<Notice> GetActivesByPeriod(DateOnly start, DateOnly end)
+    public async Task<IEnumerable<Notice>> GetActivesByPeriodAsync(DateOnly start, DateOnly end, CancellationToken  cancellationToken)
     {
-        return db.Notices
+        return await db.Notices
             .Where(n =>
             !n.IsDeleted &&
             n.StartDate <= end &&
             (n.EndDate == null || n.EndDate >= start))
             .AsNoTracking()
-            .ToList();
+            .ToListAsync(cancellationToken);
     }
 
-    public Notice? GetById(Guid id)
+    public async Task<Notice?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return db.Notices.FirstOrDefault(n => n.Id == id);
+        return await db.Notices.FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
 }

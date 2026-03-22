@@ -35,9 +35,9 @@ public class Notice : Entity, IAgreggateRoot
     {
         if (IsExpired())
             throw new InvalidOperationException(
-                "N„o È possÌvel ativar um aviso expirado.");
+                "N√£o √© poss√≠vel ativar um aviso expirado.");
 
-        base.Recover();
+        Recover();
     }
 
     public bool IsExpired()
@@ -55,22 +55,22 @@ public class Notice : Entity, IAgreggateRoot
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new InvalidOperationException(
-                "O tÌtulo do aviso n„o pode ser nulo ou vazio.");
+                "O t√≠tulo do aviso n√£o pode ser nulo ou vazio.");
 
         if (string.IsNullOrWhiteSpace(description))
             throw new InvalidOperationException(
-                "A descriÁ„o do aviso n„o pode ser nula ou vazia.");
+                "A descri√ß√£o do aviso n√£o pode ser nula ou vazia.");
 
         if (createdByUserId == Guid.Empty)
             throw new InvalidOperationException(
-                "O campo \"Criado por usu·rio\" n„o pode estar vazio.");
+                "O campo \"Criado por usu√°rio\" n√£o pode estar vazio.");
 
         if (startDate == default)
             throw new InvalidOperationException(
-                "… necess·rio ter uma data de inÌcio.");
+                "√â necess√°rio ter uma data de in√≠cio.");
 
         if (endDate.HasValue && endDate.Value < startDate)
             throw new InvalidOperationException(
-                "A data de tÈrmino n„o pode ser anterior ‡ data de inÌcio.");
+                "A data de t√©rmino n√£o pode ser anterior √† data de in√≠cio.");
     }
 }

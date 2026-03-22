@@ -7,14 +7,12 @@ public class ActivateNoticeHandler(INoticeRepository repository, IAnnouncementUn
 {
     public async Task<ActivateNoticeResponse> HandleAsync(ActivateNoticeRequest request, CancellationToken cancellationToken)
     {
-        var notice = repository.GetById(request.Id);
-        if (notice is null)
-            throw new InvalidOperationException("Notice not found");
-
+        var notice = await repository.GetByIdAsync(request.Id, cancellationToken);
+        Throw.When.Null(notice, Resource.NoticeNotFound);
+        
         notice.Activate();
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
-
         return notice.ToResponse();
     }
 }

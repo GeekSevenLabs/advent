@@ -8,7 +8,7 @@ public class CreateNoticeHandler(INoticeRepository repository, IAnnouncementUnit
     public async Task<CreateNoticeResponse> HandleAsync(CreateNoticeRequest request, CancellationToken cancellationToken)
     {
         var notice = request.ToEntity();
-        repository.Add(notice);
+        repository.Add(notice, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return notice.ToResponse();
     }

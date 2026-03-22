@@ -3,5 +3,5 @@
 public record ActivateNoticeResponse(
     Guid Id,
     string Title,
-    string description
+    string Description
 );

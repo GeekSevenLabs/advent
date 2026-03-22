@@ -21,25 +21,25 @@ public class DeactivateNoticeHandlerTest
             null,
             Guid.NewGuid()
         );
-
+        
         Mock.Get(repository)
-            .Setup(repo => repo.GetById(It.IsAny<Guid>()))
-            .Returns(notice);
+            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
+            .ReturnsAsync(notice);
 
         var handler = new DeactivateNoticeHandler(repository, unitOfWork);
         var request = new DeactivateNoticeRequest(noticeId);
 
         // Act
-        var response = await handler.HandleAsync(request, CancellationToken.None);
+        var response = await handler.HandleAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(response);
         Assert.Equal(notice.Id, response.Id);
-        Assert.NotEqual(default(DateTimeOffset), response.DeletedAt);
+        Assert.NotEqual(default, response.DeletedAt);
         Assert.True(notice.IsDeleted);
 
         Mock.Get(repository)
-            .Verify(repo => repo.GetById(It.IsAny<Guid>()), Times.Once);
+            .Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken), Times.Once);
 
         Mock.Get(unitOfWork)
             .Verify(uw => uw.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
@@ -53,14 +53,14 @@ public class DeactivateNoticeHandlerTest
         var unitOfWork = Mock.Of<IAnnouncementUnitOfWork>();
 
         Mock.Get(repository)
-            .Setup(repo => repo.GetById(It.IsAny<Guid>()))
-            .Returns((Notice?)null);
+            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
+            .ReturnsAsync((Notice?)null);
 
         var handler = new DeactivateNoticeHandler(repository, unitOfWork);
         var request = new DeactivateNoticeRequest(Guid.NewGuid());
 
         // Act & Assert
-        await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            handler.HandleAsync(request, CancellationToken.None));
+        await Assert.ThrowsAsync<ArgumentException>(() =>
+            handler.HandleAsync(request, TestContext.Current.CancellationToken));
     }
 }

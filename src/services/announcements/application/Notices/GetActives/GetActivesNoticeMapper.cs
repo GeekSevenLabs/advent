@@ -17,4 +17,9 @@ internal static class GetActivesNoticeMapper
             );
         }
     }
+
+    extension(IEnumerable<Notice> notices)
+    {
+        public IEnumerable<GetActivesNoticeResponse> ToResponse() => notices.Select(ToResponse).ToArray();
+    }
 }

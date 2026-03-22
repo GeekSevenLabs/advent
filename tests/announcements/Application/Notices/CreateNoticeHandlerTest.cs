@@ -22,7 +22,7 @@ public class CreateNoticeHandlerTest
         );
 
         // Act
-        var response = await handler.HandleAsync(request, CancellationToken.None);
+        var response = await handler.HandleAsync(request, TestContext.Current.CancellationToken);
         
         // Assert
         Assert.NotNull(response);
@@ -30,10 +30,10 @@ public class CreateNoticeHandlerTest
         Assert.Equal("Test Title", response.Title);
         
         Mock.Get(repository)
-            .Verify(repo => repo.Add(It.IsAny<Notice>()), Times.Once);
+            .Verify(repo => repo.Add(It.IsAny<Notice>(), TestContext.Current.CancellationToken), Times.Once);
         
         Mock.Get(unitOfWork)
-            .Verify(uw => uw.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            .Verify(uw => uw.SaveChangesAsync(TestContext.Current.CancellationToken), Times.Once);
     }
 
 }
