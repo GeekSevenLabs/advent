@@ -1,6 +1,6 @@
 ﻿namespace Advent.Announcements.Application.Notices.GetActives;
 
-public record GetActiveNoticeResponse(
+public record GetActivesNoticeResponse(
     Guid Id,
     string Title,
     string Description,

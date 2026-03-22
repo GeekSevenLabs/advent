@@ -1,14 +1,14 @@
 ﻿using Advent.Announcements.Domain.Notices;
 
-namespace Advent.Announcements.Application.Notices.GetActives;
+namespace Advent.Announcements.Application.Notices.GetById;
 
-internal static class GetActiveNoticeMapper
+internal static class GetNoticeByIdMapper
 {
     extension(Notice notice)
     {
-        public GetActiveNoticeResponse ToResponse()
+        public GetNoticeByIdResponse ToResponse()
         {
-            return new GetActiveNoticeResponse(
+            return new GetNoticeByIdResponse(
                 notice.Id,
                 notice.Title,
                 notice.Description,
