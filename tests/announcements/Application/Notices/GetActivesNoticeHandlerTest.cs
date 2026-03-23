@@ -36,4 +36,28 @@ public class GetActivesNoticeHandlerTest
         Mock.Get(repository)
             .Verify(repo => repo.GetActivesAsync(TestContext.Current.CancellationToken), Times.Once);
     }
+
+    [Fact]
+    public async Task GivenNoActiveNoticesWhenHandleCalledThenReturnsEmptyList()
+    {
+        // Arrange
+        var repository = Mock.Of<INoticeRepository>();
+
+        Mock.Get(repository)
+            .Setup(repo => repo.GetActivesAsync(TestContext.Current.CancellationToken))
+            .ReturnsAsync(new List<Notice>());
+
+        var handler = new GetActivesNoticeHandler(repository);
+        var request = new GetActivesNoticeRequest();
+
+        // Act
+        var response = (await handler.HandleAsync(request, TestContext.Current.CancellationToken)).ToArray();
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.Empty(response);
+
+        Mock.Get(repository)
+            .Verify(repo => repo.GetActivesAsync(TestContext.Current.CancellationToken), Times.Once);
+    }
 }
