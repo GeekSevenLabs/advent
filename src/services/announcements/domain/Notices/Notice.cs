@@ -73,4 +73,17 @@ public class Notice : Entity, IAgreggateRoot
             throw new InvalidOperationException(
                 "A data de término não pode ser anterior à data de início.");
     }
+
+    public void Update(
+        string title,
+        string description,
+        DateOnly startDate,
+        DateOnly? endDate)
+    {
+        Validate(title, description, startDate, endDate, CreatedByUserId);
+        Title = title;
+        Description = description;
+        StartDate = startDate;
+        EndDate = endDate;
+    }
 }
