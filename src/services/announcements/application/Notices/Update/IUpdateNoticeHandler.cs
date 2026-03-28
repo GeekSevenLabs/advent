@@ -2,5 +2,5 @@
 
 public interface IUpdateNoticeHandler
 {
-    Task<UpdateNoticeResponse> HandleAsync(UpdateNoticeRequest request, CancellationToken cancellationToken);
+    Task HandleAsync(NoticeDto request, CancellationToken cancellationToken);
 }

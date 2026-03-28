@@ -2,5 +2,5 @@
 
 public interface IGetNoticeByIdHandler
 {
-    Task<GetNoticeByIdResponse> HandleAsync(GetNoticeByIdRequest request, CancellationToken cancellationToken);
+    Task<NoticeDto> HandleAsync(GetNoticeByIdRequest request, CancellationToken cancellationToken);
 }

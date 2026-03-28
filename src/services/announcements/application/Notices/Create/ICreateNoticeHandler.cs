@@ -2,5 +2,5 @@ namespace Advent.Announcements.Application.Notices.Create;
 
 public interface ICreateNoticeHandler
 {
-    Task<CreateNoticeResponse> HandleAsync(CreateNoticeRequest request, CancellationToken cancellationToken);
+    Task<NoticeDto> HandleAsync(NoticeDto request, CancellationToken cancellationToken);
 }

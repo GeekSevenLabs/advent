@@ -1,3 +1,4 @@
+using Advent.Announcements.Application.Notices;
 using Advent.Announcements.Application.Notices.Create;
 using Advent.Announcements.Domain;
 using Advent.Announcements.Domain.Notices;
@@ -14,12 +15,13 @@ public class CreateNoticeHandlerTest
         var unitOfWork = Mock.Of<IAnnouncementUnitOfWork>();
         
         var handler = new CreateNoticeHandler(repository, unitOfWork);
-        var request = new CreateNoticeRequest(
-            "Test Title", 
-            "Test Content",
-            DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)),
-            null
-        );
+        var request = new NoticeDto
+        {
+            Title ="Test Title", 
+            Description = "Test Content",
+            StartDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)),
+            EndDate = null
+        };
 
         // Act
         var response = await handler.HandleAsync(request, TestContext.Current.CancellationToken);

@@ -5,7 +5,7 @@ namespace Advent.Announcements.Application.Notices.Activate;
 
 public class ActivateNoticeHandler(INoticeRepository repository, IAnnouncementUnitOfWork unitOfWork) : IActivateNoticeHandler
 {
-    public async Task<ActivateNoticeResponse> HandleAsync(ActivateNoticeRequest request, CancellationToken cancellationToken)
+    public async Task HandleAsync(ActivateNoticeRequest request, CancellationToken cancellationToken)
     {
         var notice = await repository.GetByIdAsync(request.Id, cancellationToken);
         Throw.When.Null(notice, Resource.NoticeNotFound);
@@ -13,7 +13,6 @@ public class ActivateNoticeHandler(INoticeRepository repository, IAnnouncementUn
         notice.Activate();
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        return notice.ToResponse();
     }
 }
 

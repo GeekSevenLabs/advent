@@ -2,5 +2,5 @@
 
 public interface IActivateNoticeHandler
 {
-    Task<ActivateNoticeResponse> HandleAsync(ActivateNoticeRequest request, CancellationToken cancellationToken);
+    Task HandleAsync(ActivateNoticeRequest request, CancellationToken cancellationToken);
 }

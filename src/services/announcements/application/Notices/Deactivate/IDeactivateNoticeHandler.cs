@@ -2,5 +2,5 @@
 
 public interface IDeactivateNoticeHandler
 {
-    Task<DeactivateNoticeResponse> HandleAsync(DeactivateNoticeRequest request, CancellationToken cancellationToken);
+    Task HandleAsync(DeactivateNoticeRequest request, CancellationToken cancellationToken);
 }
