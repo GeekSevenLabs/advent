@@ -3,8 +3,7 @@ using Advent.Announcements.Infrastructure.Contexts;
 
 namespace Advent.Announcements.Infrastructure.Repositories;
 
-internal class NoticeRepository(AnnouncementDbContext db)
-    : INoticeRepository
+internal class NoticeRepository(AnnouncementDbContext db) : INoticeRepository
 {
     public void Add(Notice notice, CancellationToken _)
     {
@@ -39,4 +38,5 @@ internal class NoticeRepository(AnnouncementDbContext db)
     {
         return await db.Notices.FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
+    
 }

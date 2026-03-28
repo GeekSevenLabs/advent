@@ -1,4 +1,5 @@
 ﻿using Advent.Announcements.Application;
+using Advent.Announcements.Application.Notices;
 using Advent.Announcements.Application.Notices.Update;
 using Advent.Announcements.Domain;
 using Advent.Announcements.Domain.Notices;
@@ -30,22 +31,20 @@ public class UpdateNoticeHandlerTest
 
         var handler = new UpdateNoticeHandler(repository, unitOfWork);
 
-        var request = new UpdateNoticeRequest(
-            noticeId,
-            "New Title",
-            "New Description",
-            DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)),
-            null
-        );
-
+        var request = new NoticeDto
+        {
+            Title ="New Test Title", 
+            Description = "New Test Content",
+            StartDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)),
+            EndDate = null
+        };
+        
         // Act
-        var response = await handler.HandleAsync(request, TestContext.Current.CancellationToken);
+        await handler.HandleAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
-        Assert.NotNull(response);
-        Assert.Equal(notice.Id, response.Id);
-        Assert.Equal("New Title", response.Title);
-        Assert.Equal("New Description", response.Description);
+        Assert.Equal("New Test Title", notice.Title);
+        Assert.Equal("New Test Content", notice.Description);
 
         Mock.Get(repository)
             .Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken), Times.Once);
@@ -67,14 +66,14 @@ public class UpdateNoticeHandlerTest
 
         var handler = new UpdateNoticeHandler(repository, unitOfWork);
 
-        var request = new UpdateNoticeRequest(
-            Guid.NewGuid(),
-            "Title",
-            "Description",
-            DateOnly.FromDateTime(DateTime.UtcNow),
-            null
-        );
-
+        var request = new NoticeDto
+        {
+            Title ="Test Title", 
+            Description = "Test Content",
+            StartDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)),
+            EndDate = null
+        };
+        
         // Act & Assert
         var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             handler.HandleAsync(request, TestContext.Current.CancellationToken));

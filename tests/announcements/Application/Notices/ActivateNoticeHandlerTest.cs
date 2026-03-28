@@ -1,7 +1,6 @@
 ﻿using Advent.Announcements.Application.Notices.Activate;
 using Advent.Announcements.Domain;
 using Advent.Announcements.Domain.Notices;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.Engine.ClientProtocol;
 
 namespace Advent.Announcements.Tests.Application.Notices;
 
@@ -29,10 +28,9 @@ public class ActivateNoticeHandlerTest
         var request = new ActivateNoticeRequest(notice.Id);
 
         // Act
-        var response = await handler.HandleAsync(request, TestContext.Current.CancellationToken);
+        await handler.HandleAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
-        Assert.NotNull(response);
         Assert.False(notice.IsDeleted);
         Assert.Null(notice.DeletedAt);
 

@@ -5,9 +5,11 @@ namespace Advent.Announcements.Application.Notices.Create;
 
 public class CreateNoticeHandler(INoticeRepository repository, IAnnouncementUnitOfWork unitOfWork) : ICreateNoticeHandler
 {
-    public async Task<CreateNoticeResponse> HandleAsync(CreateNoticeRequest request, CancellationToken cancellationToken)
+    public async Task<NoticeDto> HandleAsync(NoticeDto request, CancellationToken cancellationToken)
     {
-        var notice = request.ToEntity();
+        // TODO: alterar para o pegar do user context
+        var userId = Guid.CreateVersion7();
+        var notice = request.ToEntity(userId);
         repository.Add(notice, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return notice.ToResponse();

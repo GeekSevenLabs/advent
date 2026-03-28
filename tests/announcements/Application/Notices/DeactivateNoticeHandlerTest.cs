@@ -30,12 +30,9 @@ public class DeactivateNoticeHandlerTest
         var request = new DeactivateNoticeRequest(noticeId);
 
         // Act
-        var response = await handler.HandleAsync(request, TestContext.Current.CancellationToken);
+        await handler.HandleAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
-        Assert.NotNull(response);
-        Assert.Equal(notice.Id, response.Id);
-        Assert.NotEqual(default, response.DeletedAt);
         Assert.True(notice.IsDeleted);
 
         Mock.Get(repository)
