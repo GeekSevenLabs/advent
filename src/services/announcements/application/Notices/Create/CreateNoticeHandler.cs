@@ -3,7 +3,7 @@ using Advent.Announcements.Domain.Notices;
 
 namespace Advent.Announcements.Application.Notices.Create;
 
-public class CreateNoticeHandler(INoticeRepository repository, IAnnouncementUnitOfWork unitOfWork) : ICreateNoticeHandler
+public class CreateNoticeHandler(INoticeRepository repository, IAnnouncementUnitOfWork unitOfWork) : IFuncHandler<NoticeDto, NoticeDto>
 {
     public async Task<NoticeDto> HandleAsync(NoticeDto request, CancellationToken cancellationToken)
     {

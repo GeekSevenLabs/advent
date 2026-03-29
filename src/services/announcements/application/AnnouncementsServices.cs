@@ -9,7 +9,7 @@ public static class AnnouncementsServices
     {
         // Handlers
         // services.AddScoped<INoticeRepository, NoticeRepository>();
-        
+        //
         return services;
     }
 }

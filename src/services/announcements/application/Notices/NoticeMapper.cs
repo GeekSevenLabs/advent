@@ -1,4 +1,3 @@
-using Advent.Announcements.Application.Notices.Activate;
 using Advent.Announcements.Domain.Notices;
 
 namespace Advent.Announcements.Application.Notices;
