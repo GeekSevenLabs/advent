@@ -3,7 +3,7 @@ using Advent.Announcements.Domain.Notices;
 
 namespace Advent.Announcements.Application.Notices.Activate;
 
-public class ActivateNoticeHandler(INoticeRepository repository, IAnnouncementUnitOfWork unitOfWork) : IActivateNoticeHandler
+public class ActivateNoticeHandler(INoticeRepository repository, IAnnouncementUnitOfWork unitOfWork) : IActionHandler<ActivateNoticeRequest>
 {
     public async Task HandleAsync(ActivateNoticeRequest request, CancellationToken cancellationToken)
     {
@@ -14,5 +14,6 @@ public class ActivateNoticeHandler(INoticeRepository repository, IAnnouncementUn
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
+
 }
 
