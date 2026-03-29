@@ -1,3 +1,4 @@
+using Advent.Announcements.Application;
 using Advent.Announcements.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddAnnouncementsServices(builder.Configuration);
+builder.Services.AddAnnouncementsApplicationServices(builder.Configuration);
+builder.Services.AddAnnouncementsInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 

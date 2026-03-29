@@ -11,7 +11,7 @@ public static class AnnouncementsServices
 {
     private const string DbConnectionStringName = "DefaultConnection";
     
-    public static IServiceCollection AddAnnouncementsServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAnnouncementsInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         // Db
         services.AddDbContext<AnnouncementDbContext>(option =>
