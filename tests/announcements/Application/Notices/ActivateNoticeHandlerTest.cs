@@ -1,4 +1,5 @@
-﻿using Advent.Announcements.Application.Notices.Activate;
+﻿using Advent.Announcements.Application;
+using Advent.Announcements.Application.Notices.Activate;
 using Advent.Announcements.Domain;
 using Advent.Announcements.Domain.Notices;
 
@@ -20,6 +21,8 @@ public class ActivateNoticeHandlerTest
             Guid.NewGuid()
         );
 
+        notice.Deactivate();
+
         Mock.Get(repository)
             .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
             .ReturnsAsync(notice);
@@ -35,7 +38,7 @@ public class ActivateNoticeHandlerTest
         Assert.Null(notice.DeletedAt);
 
         Mock.Get(unitOfWork)
-            .Verify(uw => uw.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            .Verify(uw => uw.SaveChangesAsync(TestContext.Current.CancellationToken), Times.Once);
     }
 
     [Fact]
@@ -45,11 +48,10 @@ public class ActivateNoticeHandlerTest
         var repository = Mock.Of<INoticeRepository>();
         var unitOfWork = Mock.Of<IAnnouncementUnitOfWork>();
 
-        var expiredDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-5));
         var notice = new Notice(
             "Título", "Descrição",
             DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-10)),
-            expiredDate,
+            DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-5)),
             Guid.NewGuid()
         );
 
@@ -65,10 +67,13 @@ public class ActivateNoticeHandlerTest
             handler.HandleAsync(request, TestContext.Current.CancellationToken));
 
         Assert.Equal("Não é possível ativar um aviso expirado.", exception.Message);
+
+        Mock.Get(unitOfWork)
+            .Verify(uw => uw.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
-    public async Task GivenInexistentNoticeWhenHandleCalledThenThrowsNotFoundException()
+    public async Task GivenInexistentNoticeWhenHandleCalledThenThrowsException()
     {
         // Arrange
         var repository = Mock.Of<INoticeRepository>();
@@ -82,7 +87,12 @@ public class ActivateNoticeHandlerTest
         var request = new ActivateNoticeRequest(Guid.NewGuid());
 
         // Act & Assert
-        await Assert.ThrowsAsync<ArgumentException>(() =>
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             handler.HandleAsync(request, TestContext.Current.CancellationToken));
+
+        Assert.StartsWith(Resource.NoticeNotFound, exception.Message);
+
+        Mock.Get(unitOfWork)
+            .Verify(uw => uw.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }

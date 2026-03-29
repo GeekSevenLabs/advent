@@ -1,4 +1,5 @@
-﻿using Advent.Announcements.Application.Notices.Deactivate;
+﻿using Advent.Announcements.Application;
+using Advent.Announcements.Application.Notices.Deactivate;
 using Advent.Announcements.Domain;
 using Advent.Announcements.Domain.Notices;
 
@@ -14,6 +15,7 @@ public class DeactivateNoticeHandlerTest
         var unitOfWork = Mock.Of<IAnnouncementUnitOfWork>();
 
         var noticeId = Guid.NewGuid();
+
         var notice = new Notice(
             "Título Teste",
             "Descrição Teste",
@@ -21,9 +23,9 @@ public class DeactivateNoticeHandlerTest
             null,
             Guid.NewGuid()
         );
-        
+
         Mock.Get(repository)
-            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
+            .Setup(repo => repo.GetByIdAsync(noticeId, TestContext.Current.CancellationToken))
             .ReturnsAsync(notice);
 
         var handler = new DeactivateNoticeHandler(repository, unitOfWork);
@@ -34,12 +36,13 @@ public class DeactivateNoticeHandlerTest
 
         // Assert
         Assert.True(notice.IsDeleted);
+        Assert.NotNull(notice.DeletedAt);
 
         Mock.Get(repository)
-            .Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken), Times.Once);
+            .Verify(repo => repo.GetByIdAsync(noticeId, TestContext.Current.CancellationToken), Times.Once);
 
         Mock.Get(unitOfWork)
-            .Verify(uw => uw.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            .Verify(uw => uw.SaveChangesAsync(TestContext.Current.CancellationToken), Times.Once);
     }
 
     [Fact]
@@ -49,15 +52,22 @@ public class DeactivateNoticeHandlerTest
         var repository = Mock.Of<INoticeRepository>();
         var unitOfWork = Mock.Of<IAnnouncementUnitOfWork>();
 
+        var noticeId = Guid.NewGuid();
+
         Mock.Get(repository)
-            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
+            .Setup(repo => repo.GetByIdAsync(noticeId, TestContext.Current.CancellationToken))
             .ReturnsAsync((Notice?)null);
 
         var handler = new DeactivateNoticeHandler(repository, unitOfWork);
-        var request = new DeactivateNoticeRequest(Guid.NewGuid());
+        var request = new DeactivateNoticeRequest(noticeId);
 
         // Act & Assert
-        await Assert.ThrowsAsync<ArgumentException>(() =>
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             handler.HandleAsync(request, TestContext.Current.CancellationToken));
+
+        Assert.StartsWith(Resource.NoticeNotFound, exception.Message);
+
+        Mock.Get(unitOfWork)
+            .Verify(uw => uw.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }
