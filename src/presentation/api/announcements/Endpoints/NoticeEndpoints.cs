@@ -44,7 +44,7 @@ public static class NoticeEndpoints
         return Results.Ok();
     }
 
-    private static async Task<IResult> GetById(IFuncHandler<GetNoticeByIdRequest, NoticeDto> handler, Guid id, CancellationToken cancellationToken)
+    private static async Task<IResult> GetById(Guid id, IFuncHandler<GetNoticeByIdRequest, NoticeDto> handler, CancellationToken cancellationToken)
     {
         var request = new GetNoticeByIdRequest(id);
         var response = await handler.HandleAsync(request, cancellationToken);
