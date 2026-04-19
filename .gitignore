@@ -417,7 +417,6 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-appsettings.Development.json
 
 # Rider
 
