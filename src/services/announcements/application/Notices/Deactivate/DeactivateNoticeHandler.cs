@@ -3,7 +3,7 @@ using Advent.Announcements.Domain.Notices;
 
 namespace Advent.Announcements.Application.Notices.Deactivate;
 
-public class DeactivateNoticeHandler(INoticeRepository repository, IAnnouncementUnitOfWork unitOfWork) : IDeactivateNoticeHandler
+public class DeactivateNoticeHandler(INoticeRepository repository, IAnnouncementUnitOfWork unitOfWork) : IActionHandler<DeactivateNoticeRequest>
 {
     public async Task HandleAsync(DeactivateNoticeRequest request, CancellationToken cancellationToken)
     {

@@ -22,7 +22,7 @@ public class GetNoticeByIdHandlerTest
         );
 
         Mock.Get(repository)
-            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
+            .Setup(repo => repo.GetByIdAsync(noticeId, TestContext.Current.CancellationToken))
             .ReturnsAsync(notice);
 
         var handler = new GetNoticeByIdHandler(repository);
@@ -35,9 +35,10 @@ public class GetNoticeByIdHandlerTest
         Assert.NotNull(response);
         Assert.Equal(notice.Id, response.Id);
         Assert.Equal("Título do Aviso", response.Title);
+        Assert.Equal("Descrição do Aviso", response.Description);
 
         Mock.Get(repository)
-            .Verify(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken), Times.Once);
+            .Verify(repo => repo.GetByIdAsync(noticeId, TestContext.Current.CancellationToken), Times.Once);
     }
 
     [Fact]
@@ -46,17 +47,22 @@ public class GetNoticeByIdHandlerTest
         // Arrange
         var repository = Mock.Of<INoticeRepository>();
 
+        var noticeId = Guid.NewGuid();
+
         Mock.Get(repository)
-            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), TestContext.Current.CancellationToken))
+            .Setup(repo => repo.GetByIdAsync(noticeId, TestContext.Current.CancellationToken))
             .ReturnsAsync((Notice?)null);
 
         var handler = new GetNoticeByIdHandler(repository);
-        var request = new GetNoticeByIdRequest(Guid.NewGuid());
+        var request = new GetNoticeByIdRequest(noticeId);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
             handler.HandleAsync(request, TestContext.Current.CancellationToken));
 
         Assert.StartsWith(Resource.NoticeNotFound, exception.Message);
+
+        Mock.Get(repository)
+            .Verify(repo => repo.GetByIdAsync(noticeId, TestContext.Current.CancellationToken), Times.Once);
     }
 }

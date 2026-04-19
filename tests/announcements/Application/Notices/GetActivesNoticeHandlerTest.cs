@@ -25,13 +25,16 @@ public class GetActivesNoticeHandlerTest
         var request = new GetActivesNoticeRequest();
 
         // Act
-        var response = (await handler.HandleAsync(request, TestContext.Current.CancellationToken)).ToArray();
-        
+        var response = await handler.HandleAsync(request, TestContext.Current.CancellationToken);
+
         // Assert
         Assert.NotNull(response);
-        Assert.Equal(2, response.Length);
-        Assert.Contains(response, r => r.Title == "Aviso 1");
-        Assert.Contains(response, r => r.Title == "Aviso 2");
+
+        var result = response.ToArray();
+
+        Assert.Equal(2, result.Length);
+        Assert.Contains(result, r => r.Title == "Aviso 1" && r.Description == "Desc 1");
+        Assert.Contains(result, r => r.Title == "Aviso 2" && r.Description == "Desc 2");
 
         Mock.Get(repository)
             .Verify(repo => repo.GetActivesAsync(TestContext.Current.CancellationToken), Times.Once);
@@ -51,7 +54,7 @@ public class GetActivesNoticeHandlerTest
         var request = new GetActivesNoticeRequest();
 
         // Act
-        var response = (await handler.HandleAsync(request, TestContext.Current.CancellationToken)).ToArray();
+        var response = await handler.HandleAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(response);
