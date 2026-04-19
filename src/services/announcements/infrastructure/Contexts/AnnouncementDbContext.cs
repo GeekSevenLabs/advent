@@ -4,7 +4,8 @@ using Advent.Announcements.Infrastructure.Configurations;
 
 namespace Advent.Announcements.Infrastructure.Contexts;
 
-internal class AnnouncementDbContext(DbContextOptions<AnnouncementDbContext> options) : DbContext(options), IAnnouncementUnitOfWork
+// TODO: ajustar para deixar internal
+public class AnnouncementDbContext(DbContextOptions<AnnouncementDbContext> options) : DbContext(options), IAnnouncementUnitOfWork
 {
     public required DbSet<Notice> Notices { get; init; }
 

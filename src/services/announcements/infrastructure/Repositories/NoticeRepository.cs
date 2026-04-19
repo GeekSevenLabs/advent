@@ -12,13 +12,12 @@ internal class NoticeRepository(AnnouncementDbContext db) : INoticeRepository
 
     public async Task<IEnumerable<Notice>> GetActivesAsync(CancellationToken  cancellationToken)
     {
-        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var today = DateOnly.FromDateTime(DateTime.UtcNow.AddHours(-3));
 
         return await db.Notices
             .Where(n =>
             !n.IsDeleted &&
-            n.StartDate <= today &&
-            (n.EndDate == null || n.EndDate >= today))
+            n.StartDate <= today && (n.EndDate == null || n.EndDate >= today))
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
@@ -38,5 +37,5 @@ internal class NoticeRepository(AnnouncementDbContext db) : INoticeRepository
     {
         return await db.Notices.FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
-    
+
 }

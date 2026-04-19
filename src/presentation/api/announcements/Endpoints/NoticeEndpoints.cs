@@ -11,9 +11,11 @@ public static class NoticeEndpoints
 {
     public static void MapNoticeEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("api/notices").AllowAnonymous();
+        var group = endpoints
+            .MapGroup("api/notices")
+            .AllowAnonymous();
 
-        group.MapPost("", Create);
+        group.MapPost("", Create).WithName("Create a notices").WithDescription("Create a new notice.").WithDisplayName("Create a notice");
         group.MapPut("", Update);
         group.MapPost("activate", Activate);
         group.MapPost("deactivate", Deactivate);
